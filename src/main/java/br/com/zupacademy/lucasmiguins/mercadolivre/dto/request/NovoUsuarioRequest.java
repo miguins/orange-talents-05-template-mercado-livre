@@ -7,11 +7,13 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import br.com.zupacademy.lucasmiguins.mercadolivre.model.Usuario;
+import br.com.zupacademy.lucasmiguins.mercadolivre.validation.annotation.UniqueValue;
 
 public class NovoUsuarioRequest {
 	
 	@NotBlank
 	@Email
+	@UniqueValue(domainClass = Usuario.class, fieldName = "login")
 	private String login;
 	
 	@NotBlank

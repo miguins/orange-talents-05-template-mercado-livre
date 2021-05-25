@@ -28,6 +28,10 @@ public class Usuario {
 	
 	private LocalDateTime dataCriacao;
 
+	@Deprecated
+	public Usuario() {
+	}
+
 	public Usuario(@NotBlank @Email String login, @NotBlank @Length(min = 6) String senha) {
 		this.login = login;
 		this.senha = senha;
