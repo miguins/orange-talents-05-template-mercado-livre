@@ -16,11 +16,11 @@ import br.com.zupacademy.lucasmiguins.mercadolivre.repository.UsuarioRepository;
 
 public class TokenFilter extends OncePerRequestFilter {
 	
-	private TokenService tokenService;
+	private GerenciaToken tokenService;
 	
 	private UsuarioRepository usuarioRepository;
 
-	public TokenFilter(TokenService tokenService, UsuarioRepository usuarioRepository) {
+	public TokenFilter(GerenciaToken tokenService, UsuarioRepository usuarioRepository) {
 		this.tokenService = tokenService;
 		this.usuarioRepository = usuarioRepository;
 	}

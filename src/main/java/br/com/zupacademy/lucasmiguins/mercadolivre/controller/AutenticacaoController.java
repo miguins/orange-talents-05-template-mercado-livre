@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.zupacademy.lucasmiguins.mercadolivre.configuration.security.TokenService;
+import br.com.zupacademy.lucasmiguins.mercadolivre.configuration.security.GerenciaToken;
 import br.com.zupacademy.lucasmiguins.mercadolivre.dto.request.AutenticacaoRequest;
 import br.com.zupacademy.lucasmiguins.mercadolivre.dto.response.TokenResponse;
 
@@ -23,7 +23,7 @@ public class AutenticacaoController {
 	
 	@Autowired AuthenticationManager authManager;
 	
-	@Autowired TokenService tokenService;
+	@Autowired GerenciaToken tokenService;
 
 	@PostMapping
 	public ResponseEntity<TokenResponse> autenticar(@RequestBody @Valid AutenticacaoRequest request) {
