@@ -3,9 +3,13 @@ package br.com.zupacademy.lucasmiguins.mercadolivre.model;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.OptionalDouble;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -63,6 +67,12 @@ public class Produto {
 	@OneToMany(mappedBy = "produto", cascade = CascadeType.MERGE)
 	private Set<ImagemProduto> imagens = new HashSet<>();
 	
+	@OneToMany(mappedBy = "produto")
+    private Set<Opiniao> opinioes = new HashSet<>();
+
+    @OneToMany(mappedBy = "produto")
+    private Set<PerguntaProduto> perguntas = new HashSet<>();
+	
 
 	@Deprecated
 	public Produto() {}
@@ -80,13 +90,49 @@ public class Produto {
 		this.dataCriacao = LocalDateTime.now();
 		this.caracteristicas = caracteristicas.stream().map(c -> c.toModel(this)).collect(Collectors.toSet());
 	}
-	
+
 	public String getNome() {
 		return nome;
 	}
 
+	public BigDecimal getValor() {
+		return valor;
+	}
+
+	public Integer getQuantidade() {
+		return quantidade;
+	}
+
+	public String getDescricao() {
+		return descricao;
+	}
+
+	public Categoria getCategoria() {
+		return categoria;
+	}
+
+	public Set<CaracteristicaProduto> getCaracteristicas() {
+		return caracteristicas;
+	}
+
 	public Usuario getUsuarioCriacao() {
 		return usuarioCriacao;
+	}
+
+	public Set<ImagemProduto> getImagens() {
+		return imagens;
+	}
+	
+	public Set<Opiniao> getOpinioes() {
+		return opinioes;
+	}
+
+	public Set<PerguntaProduto> getPerguntas() {
+		return perguntas;
+	}
+	
+	public Integer getTotalOpinioes() {
+		return this.getOpinioes().size();
 	}
 
 	@Override
@@ -128,5 +174,37 @@ public class Produto {
 	
 	public boolean pertenceAoUsuario(Usuario usuarioLogado) {
 		return this.usuarioCriacao.equals(usuarioLogado);
+	}
+	
+	public Double getMediaOpnioes() {
+		Double mediaNota = 0.0;
+		
+		List<Integer> notas = this.getOpinioes().stream().map(o -> o.getNota()).collect(Collectors.toList());
+		OptionalDouble average = notas.stream().mapToInt(nota -> nota).average();
+		
+		if (average.isPresent()) {
+			mediaNota = average.getAsDouble();
+		}
+		
+		double mediaArredondada = Math.round(mediaNota * 10.0) / 10.0;
+		
+		return mediaArredondada;
+	}
+	
+	public HashMap<Integer, Integer> getTotalPorTipoNota() {
+		
+		HashMap<Integer, Integer> mapaNotas = new HashMap<Integer, Integer>();
+		
+		List<Integer> notas = this.getOpinioes().stream().map(o -> o.getNota()).collect(Collectors.toList());
+		
+		for (Integer valor : notas) {
+			
+			if (mapaNotas.containsKey(valor))
+				mapaNotas.put(valor, mapaNotas.get(valor) + 1);
+			 else 
+				mapaNotas.put(valor, 1);
+		}
+		
+		return mapaNotas;
 	}
 }

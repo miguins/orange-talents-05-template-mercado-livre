@@ -32,6 +32,14 @@ public class Categoria {
 		this.categoriaMae = categoriaMae;
 	}
 
+	public String getNome() {
+		return nome;
+	}
+	
+	public Categoria getCategoriaMae() {
+		return categoriaMae;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
