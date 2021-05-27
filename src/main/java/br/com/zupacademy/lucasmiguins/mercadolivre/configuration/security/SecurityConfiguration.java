@@ -20,7 +20,7 @@ import br.com.zupacademy.lucasmiguins.mercadolivre.repository.UsuarioRepository;
 @Configuration
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	
-	@Autowired private AutenticacaoService autenticacaoService;
+	@Autowired private DetalhesUsuario detalhesUsuario;
 	
 	@Autowired private TokenService tokenService;
 	
@@ -34,7 +34,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(autenticacaoService).passwordEncoder(new BCryptPasswordEncoder());
+		auth.userDetailsService(detalhesUsuario).passwordEncoder(new BCryptPasswordEncoder());
 	}
 	
 	@Override

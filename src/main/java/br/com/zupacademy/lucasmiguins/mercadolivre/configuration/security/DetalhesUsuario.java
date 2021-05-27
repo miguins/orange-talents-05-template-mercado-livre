@@ -6,13 +6,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import br.com.zupacademy.lucasmiguins.mercadolivre.model.Usuario;
 import br.com.zupacademy.lucasmiguins.mercadolivre.repository.UsuarioRepository;
 
-@Service
-public class AutenticacaoService implements UserDetailsService {
+@Component
+public class DetalhesUsuario implements UserDetailsService {
 
 	@Autowired private UsuarioRepository usuarioRepository;
 	

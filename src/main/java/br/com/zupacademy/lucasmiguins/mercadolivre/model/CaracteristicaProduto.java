@@ -8,8 +8,8 @@ import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotBlank;
 
 @Entity
-public class Categoria {
-
+public class CaracteristicaProduto {
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -17,19 +17,19 @@ public class Categoria {
 	@NotBlank
 	private String nome;
 	
+	@NotBlank
+	private String descricao;
+	
 	@ManyToOne
-	private Categoria categoriaMae;
+	private Produto produto;
 
 	@Deprecated
-	public Categoria() {
-	}
+	public CaracteristicaProduto() {}
 
-	public Categoria(@NotBlank String nome) {
+	public CaracteristicaProduto(@NotBlank String nome, @NotBlank String descricao, Produto produto) {
 		this.nome = nome;
-	}
-
-	public void setCategoriaMae(Categoria categoriaMae) {
-		this.categoriaMae = categoriaMae;
+		this.descricao = descricao;
+		this.produto = produto;
 	}
 
 	@Override
@@ -37,6 +37,7 @@ public class Categoria {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((nome == null) ? 0 : nome.hashCode());
+		result = prime * result + ((produto == null) ? 0 : produto.hashCode());
 		return result;
 	}
 
@@ -48,11 +49,16 @@ public class Categoria {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Categoria other = (Categoria) obj;
+		CaracteristicaProduto other = (CaracteristicaProduto) obj;
 		if (nome == null) {
 			if (other.nome != null)
 				return false;
 		} else if (!nome.equals(other.nome))
+			return false;
+		if (produto == null) {
+			if (other.produto != null)
+				return false;
+		} else if (!produto.equals(other.produto))
 			return false;
 		return true;
 	}
