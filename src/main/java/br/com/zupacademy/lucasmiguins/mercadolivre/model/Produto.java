@@ -80,6 +80,14 @@ public class Produto {
 		this.dataCriacao = LocalDateTime.now();
 		this.caracteristicas = caracteristicas.stream().map(c -> c.toModel(this)).collect(Collectors.toSet());
 	}
+	
+	public String getNome() {
+		return nome;
+	}
+
+	public Usuario getUsuarioCriacao() {
+		return usuarioCriacao;
+	}
 
 	@Override
 	public int hashCode() {
