@@ -12,10 +12,10 @@ public class EnviadorEmailFake implements EnviadorEmail {
 
 		StringBuilder email = new StringBuilder();
 		
-		email.append(" Interessado: " + remetente + "\n");
+		email.append(" Remetente: " + remetente + "\n");
 		email.append(" Destinatário: " + destinatario + "\n");
-		email.append(" Título: " + "Você recebeu uma pergunta do produto: " + titulo + "\n");
-		email.append(" Pergunta: " + corpo);
+		email.append(" Título: " + titulo + "\n");
+		email.append(" Corpo: \n" + corpo);
 		
 		System.out.println(email);
 	}

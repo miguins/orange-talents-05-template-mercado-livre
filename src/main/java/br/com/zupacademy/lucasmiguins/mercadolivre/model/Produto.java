@@ -18,6 +18,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
@@ -27,6 +28,7 @@ import javax.validation.constraints.Size;
 import org.hibernate.validator.constraints.Length;
 
 import br.com.zupacademy.lucasmiguins.mercadolivre.dto.request.NovaCaracteristicaProdutoRequest;
+import br.com.zupacademy.lucasmiguins.mercadolivre.dto.request.NovaCompraRequest;
 
 @Entity
 public class Produto {
@@ -206,5 +208,15 @@ public class Produto {
 		}
 		
 		return mapaNotas;
+	}
+
+	public boolean processaCompra(Integer quantidadeCompra) {
+		
+		if (this.getQuantidade() >= quantidadeCompra) {
+			this.quantidade -= quantidadeCompra;
+			return true;
+		}
+		
+		return false;
 	}
 }
