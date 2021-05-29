@@ -8,7 +8,7 @@ public enum EnumGatewayPagamento {
 		@Override
 		public String obterUrlGateway(String id, UriComponentsBuilder uri) {
 			
-			String urlRetorno = uri.path("/compra/{id}").buildAndExpand(id).toString();
+			String urlRetorno = uri.path("/compra-paypal/{id}").buildAndExpand(id).toString();
 			
 			return "paypal.com?buyerId=" + id + "&redirectUrl=" + urlRetorno;
 		}
@@ -18,7 +18,7 @@ public enum EnumGatewayPagamento {
 		@Override
 		public String obterUrlGateway(String id, UriComponentsBuilder uri) {
 			
-			String urlRetorno = uri.path("/compra/{id}").buildAndExpand(id).toString();
+			String urlRetorno = uri.path("/compra-pagseguro/{id}").buildAndExpand(id).toString();
 			
 			return "pagseguro.com?returnId=" + id + "&redirectUrl=" + urlRetorno;
 		}

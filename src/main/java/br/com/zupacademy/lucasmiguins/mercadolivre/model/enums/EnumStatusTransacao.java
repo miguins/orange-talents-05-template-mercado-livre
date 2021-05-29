@@ -1,7 +1,7 @@
 package br.com.zupacademy.lucasmiguins.mercadolivre.model.enums;
 
-public enum EnumStatusCompra {
+public enum EnumStatusTransacao {
 	
-	INICIADA,
-	FINALIZADA
+	SUCESSO,
+	ERRO
 }

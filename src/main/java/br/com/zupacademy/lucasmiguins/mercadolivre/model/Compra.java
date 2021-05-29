@@ -2,7 +2,10 @@ package br.com.zupacademy.lucasmiguins.mercadolivre.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -10,12 +13,16 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 
 import org.springframework.web.util.UriComponentsBuilder;
 
+import br.com.zupacademy.lucasmiguins.mercadolivre.dto.request.PagSeguroRequest;
+import br.com.zupacademy.lucasmiguins.mercadolivre.dto.request.PayPalRequest;
 import br.com.zupacademy.lucasmiguins.mercadolivre.model.enums.EnumGatewayPagamento;
+import br.com.zupacademy.lucasmiguins.mercadolivre.model.enums.EnumStatus;
 import br.com.zupacademy.lucasmiguins.mercadolivre.model.enums.EnumStatusCompra;
 
 @Entity
@@ -51,6 +58,9 @@ public class Compra {
 	
 	private LocalDateTime dataCriacao;
 	
+	@OneToMany(mappedBy = "compra", cascade = CascadeType.MERGE)
+	private Set<Transacao> transacoes;
+	
 	@Deprecated
 	public Compra() {}
 
@@ -69,6 +79,14 @@ public class Compra {
 
 	public Long getId() {
 		return id;
+	}
+	
+	public Long getIdUsuario() {
+		return this.usuario.getId();
+	}
+	
+	public Long getIdDonoProduto() {
+		return this.produto.getUsuarioCriacao().getId();
 	}
 
 	public String getNomeUsuarioCompra() {
@@ -97,5 +115,46 @@ public class Compra {
 
 	public String getUrlRetorno(Long id, UriComponentsBuilder uricb) {
 		return this.gateway.obterUrlGateway(id.toString(), uricb);
+	}
+	
+	public EnumStatusCompra getStatus() {
+		return status;
+	}
+
+	public EnumGatewayPagamento getGateway() {
+		return gateway;
+	}
+
+	public void adicionarTransacao(PagSeguroRequest request) {
+		
+		Transacao transacao = request.toModelTransacao(this);
+		
+		if (!this.possuiTransacoesConcluidasComSucessoParaACompra()) {
+
+			this.transacoes.add(transacao);			
+			
+			if (request.getStatus().equals(EnumStatus.SUCESSO)) {
+				this.status = EnumStatusCompra.FINALIZADA;				
+			}
+		}
+	}
+	
+	public void adicionarTransacao(PayPalRequest request) {
+		
+		Transacao transacao = request.toModelTransacao(this);
+		
+		if (!this.possuiTransacoesConcluidasComSucessoParaACompra()) {
+
+			this.transacoes.add(transacao);			
+			
+			if (request.getStatus().equals(EnumStatus.SUCESSO)) {
+				this.status = EnumStatusCompra.FINALIZADA;				
+			}
+		}
+	}
+	
+	public boolean possuiTransacoesConcluidasComSucessoParaACompra() {
+		Set<Transacao> transacoesConcluidasComSucesso = this.transacoes.stream().filter(Transacao :: concluidaComSucesso).collect(Collectors.toSet());
+		return !transacoesConcluidasComSucesso.isEmpty();
 	}
 }
